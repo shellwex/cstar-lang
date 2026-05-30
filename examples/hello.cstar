@@ -1,1 +1,32 @@
 
+-- Hello World на C*
+-- Первая программа в истории языка
+
+compiler mode normal
+
+program HelloWorld
+
+    use module[StdIO]
+
+    body
+
+        declare text named greeting
+            in segment[Text]
+            on heap
+            is "Hello from C*"
+            on allocation failure
+                reject with error[OutOfMemory]
+
+        call StdIO.write line
+            with message as access: greeting
+            on error[WriteFailure]
+                reject with error[WriteFailure]
+            on success
+                -- готово
+        end call
+
+        release greeting
+
+    end body
+
+end program
